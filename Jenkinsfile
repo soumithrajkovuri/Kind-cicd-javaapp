@@ -1,51 +1,49 @@
 pipeline {
-    agent: any
+    agent any
 
-    environment{
-        DOCERHUB_CRED = "Docker-cred"
-        GITHUB_CRED = "git-password"
+    environment {
+        DOCKERHUB_CRED = 'Docker-cred'      // username/password for Docker Hub
+        GITHUB_CRED    = 'git-password'        // PAT token credential for Git push
         IMAGE          = "soumith30/myapp"
         TAG            = "v${BUILD_NUMBER}"
         VALUES_FILE    = "helm/myapp/Values.yaml"
     }
 
-    stages{
+    stages {
 
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
                 checkout scm
-                sh "ls-R"
+                sh "ls -R"
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                 sh """
-                    docker build -t ${IMAGE}:${TAG}
+                sh """
+                    docker build -t ${IMAGE}:${TAG} ./app
                 """
             }
         }
 
-        stage('Push Docker Image'){
+        stage('Push Docker Image') {
             steps {
-                withcredentals([usernamePassword(
-                    credentialsID: DOCERHUB_CRED,
+                withCredentials([usernamePassword(
+                    credentialsId: DOCKERHUB_CRED,
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
-
-                )]){
+                )]) {
                     sh """
                         echo "${PASS}" | docker login -u "${USER}" --password-stdin
                         docker push ${IMAGE}:${TAG}
                     """
-
-
                 }
             }
         }
 
-        stage('Update Image Tag in Git'){
+        stage('Update Image Tag in Git (GitOps)') {
             steps {
+                // modify values.yaml
                 sh """
                     sed -i 's/tag:.*/tag: ${TAG}/' ${VALUES_FILE}
 
@@ -61,7 +59,7 @@ pipeline {
                     credentialsId: GITHUB_CRED,
                     usernameVariable: 'USER',
                     passwordVariable: 'TOKEN'
-                )]){
+                )]) {
                     sh """
                         git remote set-url origin https://${USER}:${TOKEN}@github.com/soumithrajkovuri/Kind-cicd-javaapp.git
                         git push origin HEAD:main
