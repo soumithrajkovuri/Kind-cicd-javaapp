@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent: any
 
     environment{
         DOCERHUB_CRED = "Docker-cred"
