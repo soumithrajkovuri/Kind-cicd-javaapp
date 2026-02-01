@@ -63,7 +63,7 @@ pipeline {
                     passwordVariable: 'TOKEN'
                 )]){
                     sh """
-                        git remote set-url origin https://${USER}:${TOKEN}@github.com/soumithrajkovuri/kind-deployment-cicd.git
+                        git remote set-url origin https://${USER}:${TOKEN}@github.com/soumithrajkovuri/Kind-cicd-javaapp.git
                         git push origin HEAD:main
                     """
                 }
