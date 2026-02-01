@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: "soumith30/myapp"
-  tag: v7
+  tag: v24
   pullPolicy: IfNotPresent
 
 service:
