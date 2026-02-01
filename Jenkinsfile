@@ -37,6 +37,15 @@ pipeline {
             }
         }
 
+        stage('Check dockerignore'){
+            steps{
+                sh '''
+                  echo "=== Searching for .dockerignore ==="
+                  find . -name .dockerignore -type f || echo "No .dockerignore found"
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh """
