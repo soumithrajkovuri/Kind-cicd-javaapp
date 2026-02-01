@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CRED = 'Docker-cred'      // username/password for Docker Hub
-        GITHUB_CRED    = 'git-password'        // PAT token credential for Git push
+        GITHUB_CRED    = 'github-pat'        // PAT token credential for Git push
         IMAGE          = "soumith30/myapp"
         TAG            = "v${BUILD_NUMBER}"
         VALUES_FILE    = "helm/myfirstapp/values.yaml"
