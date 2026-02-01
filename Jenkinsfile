@@ -18,6 +18,14 @@ pipeline {
             }
         }
 
+        stage('Build Java app'){
+            steps{
+                dir('java-app'){
+                    sh 'mvn clean package'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh """
