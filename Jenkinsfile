@@ -9,6 +9,10 @@ pipeline {
         VALUES_FILE    = "helm/myapp/Values.yaml"
     }
 
+    tools {
+        maven 'Maven-3.9'
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -19,11 +23,6 @@ pipeline {
         }
 
         stage('Build Java app'){
-            agent {
-                docker{
-                    image 'maven:3.9.6-eclipse-temurin-17'
-                }
-            }
             steps{
                 dir('java-app'){
                     sh '''
@@ -34,15 +33,6 @@ pipeline {
                     ls -l target
                     '''
                 }
-            }
-        }
-
-        stage('Check dockerignore'){
-            steps{
-                sh '''
-                  echo "=== Searching for .dockerignore ==="
-                  find . -name .dockerignore -type f || echo "No .dockerignore found"
-                '''
             }
         }
 
