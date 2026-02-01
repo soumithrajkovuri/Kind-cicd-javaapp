@@ -21,7 +21,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh """
-                    docker build -t ${IMAGE}:${TAG} ./app
+                    docker build -t ${IMAGE}:${TAG} ./myfirstapp
                 """
             }
         }
