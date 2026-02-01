@@ -26,7 +26,13 @@ pipeline {
             }
             steps{
                 dir('java-app'){
-                    sh 'mvn clean package'
+                    sh '''
+                    pwd
+                    ls
+                    mvn clean package
+                    echo "=== Checking target directory ==="
+                    ls -l target
+                    '''
                 }
             }
         }
